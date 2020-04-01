@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cars List</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+
+    <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+
+
+
+</head>
+<body>
+<div class="container">
+
+    <table class="table">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>Mark</td>
+            <td>Model</td>
+            <td>Color</td>
+            <td>Data produce</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each=" car : ${cars}">
+            <td th:text="${car.carId}"></td>
+            <td th:text="${car.name}"></td>
+            <td th:text="${car.mark}"></td>
+            <td th:text="${car.model}"></td>
+            <td th:text="${car.color}"></td>
+            <td th:text="${car.dataProduce}"></td>
+
+            <td><a th:href="@{/cars/delete/{id}(id=${car.carId})}">Delete</a></td>
+            <td><a th:href="@{/cars/update/{id}(id=${car.carId})}">Update</a></td>
+
+
+            </td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+    <div>
+        <div class="row">
+            <a href="/cars/newCar">Add car</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+
+</html>

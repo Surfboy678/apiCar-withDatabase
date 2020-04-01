@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cars List</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+
+    <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+
+
+
+</head>
+<body>
+<div class="container">
+    <form class="form-horizontal" th:object="${car}" th:action="@{/cars}" th:method="post">
+        <div class="form-group">
+            <label class="control-label">carId</label>
+            <input type="text" class="form-control" th:field="*{carId}"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label">name</label>
+            <input type="text" class="form-control" th:field="*{name}"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label">mark</label>
+            <input type="text" class="form-control" th:field="*{mark}"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label">model</label>
+            <input type="text" class="form-control" th:field="*{model}"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label">color</label>
+            <input type="text" class="form-control" th:field="*{color}"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label">data produce</label>
+            <input type="text" class="form-control" th:field="*{dataProduce}"/>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-default">add car</button>
+        </div>
+    </form>
+</div>
+
+</body>
+
+</html>
