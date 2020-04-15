@@ -2,17 +2,17 @@ package com.brodacki.janusz.carapi.model;
 
 public class Car {
 
-    private Integer carId;
+    private Long carId;
     private String name;
     private String mark;
     private String model;
     private String color;
-    private int dataProduce;
+    private Long dataProduce;
 
     public Car() {
     }
 
-    public Car(Integer carId, String name, String mark, String model, String color, int dataProduce) {
+    public Car(Long carId, String name, String mark, String model, String color, Long dataProduce) {
         this.carId = carId;
         this.name = name;
         this.mark = mark;
@@ -21,11 +21,11 @@ public class Car {
         this.dataProduce = dataProduce;
     }
 
-    public Integer getCarId() {
+    public Long getCarId() {
         return carId;
     }
 
-    public void setCarId(Integer carId) {
+    public void setCarId(Long carId) {
         this.carId = carId;
     }
 
@@ -61,11 +61,11 @@ public class Car {
         this.color = color;
     }
 
-    public int getDataProduce() {
+    public Long getDataProduce() {
         return dataProduce;
     }
 
-    public void setDataProduce(int dataProduce) {
+    public void setDataProduce(Long dataProduce) {
         this.dataProduce = dataProduce;
     }
 

@@ -1,14 +1,12 @@
 package com.brodacki.janusz.carapi.controller;
 
+import com.brodacki.janusz.carapi.CarService;
 import com.brodacki.janusz.carapi.dao.CarDao;
 import com.brodacki.janusz.carapi.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,14 +16,17 @@ public class CarController {
 
     private CarDao carDao;
 
+    private CarService carService;
+
     @Autowired
-    public CarController(CarDao carDao) {
+    public CarController(CarDao carDao, CarService carService) {
         this.carDao = carDao;
+        this.carService = carService;
     }
 
     @GetMapping
     public String getAllCars(Model model) {
-        List<Car> allCars = carDao.findAll();
+       List<Car> allCars = carService.findAllCars();
         model.addAttribute("cars", allCars);
         return "cars";
     }
@@ -37,12 +38,12 @@ public class CarController {
     }
 
     @PostMapping
-    public String saveCar(int carId, String name, String mark, String model, String color, int dataProduce) {
+    public String saveCar( Long carId,String name, String mark, String model, String color, Long dataProduce) {
         carDao.saveCar(carId, name, mark, model, color, dataProduce);
         return "redirect:/cars";
     }
 
-    @GetMapping("/update")
+    @PostMapping("/update")
     public String updateCar(Car newCar, Model model) {
         carDao.updateCar(newCar);
         model.addAttribute("updateCar");
@@ -50,7 +51,7 @@ public class CarController {
     }
 
     @GetMapping("/delete/{idCar}")
-    public String deleteCar(@PathVariable int idCar, Model model) {
+    public String deleteCar(@PathVariable Long idCar, Model model) {
         Car car = carDao.getOne(idCar);
         if(car != null){
             carDao.deleteCar(idCar);
@@ -60,4 +61,15 @@ public class CarController {
             return null;
 
     }
+    @GetMapping("/sort")
+    public String getSelectedCars(@RequestParam Long from, @RequestParam Long to, Model model) {
+        List<Car> cars = carService.findByYear(from, to);
+        model.addAttribute("cars", cars);
+        model.addAttribute("minYear", carService.getMinYear());
+        model.addAttribute("maxYear", carService.getMaxYear());
+        model.addAttribute("from", from);
+        model.addAttribute("to", to);
+        return "sort";
+    }
+
 }

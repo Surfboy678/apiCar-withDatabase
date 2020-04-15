@@ -2,13 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Cars List</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
 
     <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
-
 
 
 </head>
@@ -28,7 +27,6 @@
         </thead>
         <tbody>
 
-
         <tr th:each=" car : ${cars}">
             <td th:text="${car.carId}"></td>
             <td th:text="${car.name}"></td>
@@ -37,33 +35,14 @@
             <td th:text="${car.color}"></td>
             <td th:text="${car.dataProduce}"></td>
 
-            <td><a th:href="@{/cars/delete/{id}(id=${car.carId})}">Delete</a></td>
-            <td><a th:href="@{/cars/update/{id}(id=${car.carId})}">Update</a></td>
+
+            </td>
         </tr>
+        <td><a th:href="@{/cars}">back</a></td>
+
         </tbody>
-
     </table>
-
-    <div>
-        <div class="row">
-            <a href="/cars/newCar">Add car</a>
-        </div>
-
-        <form th:action="@{/cars/sort}" method="get">
-        <span>From: <input type="number" name="from" th:value="${from}"
-                           th:min="${minYear}" th:max="${maxYear}">
-        </span>
-            <span>To: <input type="number" name="to" th:value="${to}"
-                             th:min="${minYear}" th:max="${maxYear}">
-            </span>
-            <span>
-            <input type="submit" th:value="Search">
-        </span>
-        </form>
-    </div>
-
 </div>
-
 </body>
 
 </html>
