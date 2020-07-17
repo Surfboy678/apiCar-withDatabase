@@ -1,16 +1,15 @@
 package com.brodacki.janusz.carapi.controller;
 
-import com.brodacki.janusz.carapi.CarService;
+import com.brodacki.janusz.carapi.service.CarService;
 import com.brodacki.janusz.carapi.dao.CarDao;
 import com.brodacki.janusz.carapi.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/cars")
 public class CarController {
 
@@ -27,7 +26,7 @@ public class CarController {
     @GetMapping
     public String getAllCars(Model model) {
        List<Car> allCars = carService.findAllCars();
-        model.addAttribute("cars", allCars);
+       model.addAttribute("cars", allCars);
         return "cars";
     }
 
@@ -45,16 +44,16 @@ public class CarController {
 
     @PostMapping("/update")
     public String updateCar(Car newCar, Model model) {
-        carDao.updateCar(newCar);
+       carService.getUpdateCar(newCar);
         model.addAttribute("updateCar");
         return "updatecar";
     }
 
     @GetMapping("/delete/{idCar}")
     public String deleteCar(@PathVariable Long idCar, Model model) {
-        Car car = carDao.getOne(idCar);
+       Car car = carService.getCarById(idCar);
         if(car != null){
-            carDao.deleteCar(idCar);
+          carService.deleteCarById(idCar);
             model.addAttribute("cars", carDao.findAll());
             return "cars";
         }else
