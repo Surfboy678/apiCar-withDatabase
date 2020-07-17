@@ -4,12 +4,13 @@ import com.brodacki.janusz.carapi.service.CarService;
 import com.brodacki.janusz.carapi.dao.CarDao;
 import com.brodacki.janusz.carapi.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/cars")
 public class CarController {
 
