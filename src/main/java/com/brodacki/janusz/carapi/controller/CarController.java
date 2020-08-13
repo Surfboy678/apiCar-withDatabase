@@ -9,8 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-@Controller
+@CrossOrigin(origins = "http://localhost:3000")
+@RestController
 @RequestMapping("/cars")
 public class CarController {
 
@@ -25,10 +25,9 @@ public class CarController {
     }
 
     @GetMapping
-    public String getAllCars(Model model) {
+    public List<Car> getAllCars() {
        List<Car> allCars = carService.findAllCars();
-       model.addAttribute("cars", allCars);
-        return "cars";
+        return allCars;
     }
 
     @RequestMapping("/newCar")
