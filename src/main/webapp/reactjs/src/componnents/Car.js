@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Card, Form, Button, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faSave, faPlusSquare, faUndo} from '@fortawesome/free-solid-svg-icons'
+import MyToast from './MyToast'
 import axios from 'axios';
 
 
@@ -10,6 +11,7 @@ export default  class Car extends Component{
     constructor(props){
         super(props);
         this.state = this.initialState;
+        this.state.show = false;
         this.carChange = this.carChange.bind(this);
         this.submitCar = this.submitCar.bind(this);
     }
@@ -38,10 +40,13 @@ export default  class Car extends Component{
         axios.post("http://localhost:8080/cars/save", car)
         .then(response => {
             if(response.data != null){
-              this.setState(this.initialState);
-              alert("Car save successfully")
+            this.setState({"show" : true});
+            setTimeout(() => this.setState({"show" : false}), 3000 )
+            }else{
+              this.setState({"show" : false});
             }
         }); 
+        this.setState(this.initialState);
     }
       
 
@@ -55,8 +60,12 @@ export default  class Car extends Component{
 
       const {carId, name, mark, model, color, dataProduce} = this.state;
 
-    return(  
-    <Card className="border border-dark bg-dark text-white">
+    return(
+      <div>
+        <div style={{"display": this.state.show ? "block": "none"}}>
+          <MyToast children = {{show:this.state.show, message :"add car sucessfully"}}/>
+        </div>
+        <Card className="border border-dark bg-dark text-white">
     <Card.Header><FontAwesomeIcon icon={faPlusSquare}/> Add Car</Card.Header>
     <Form onReset={this.resetCar} onSubmit={this.submitCar} id="carFormId">
         <Card.Body>
@@ -142,9 +151,8 @@ export default  class Car extends Component{
       </Card.Footer>
         </Form>
         </Card>
-
+      </div>  
         
-
         );
     }
 
