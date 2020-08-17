@@ -1,42 +1,87 @@
 import React, {Component} from 'react';
 import { Card, Form, Button, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faSave, faPlusSquare} from '@fortawesome/free-solid-svg-icons'
+import {faSave, faPlusSquare, faUndo} from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios';
 
 
 export default  class Car extends Component{
 
     constructor(props){
         super(props);
-        this.state = {name:'', mark:'', model:'', color:'', year:''}
+        this.state = this.initialState;
         this.carChange = this.carChange.bind(this);
         this.submitCar = this.submitCar.bind(this);
     }
-    submitCar(event){
-        alert('name ' +this.state.name +  ',Mark ' +this.state.mark + ',model ' +this.state.model + ',color ' +this.state.color + ',year ' + this.state.year);
-        event.preventDefault();
+
+    initialState = {
+      carId:'', name:'', mark:'', model:'', color:'', dataProduce:''
     }
-    carChange(event){
+
+    resetCar=() =>{
+      this.setState(() => this.initialState);
+    }
+
+    submitCar = event =>{
+        event.preventDefault();
+
+        const car = {
+        carId: this.state.carId,
+        name: this.state.name,
+        mark: this.state.mark,
+        model: this.state.model,
+        color: this.state.color,
+        dataProduce: this.state.dataProduce
+
+        };
+
+        axios.post("http://localhost:8080/cars/save", car)
+        .then(response => {
+            if(response.data != null){
+              this.setState(this.initialState);
+              alert("Car save successfully")
+            }
+        }); 
+    }
+      
+
+    carChange=event =>{
         this.setState({
             [event.target.name]: event.target.value
         });
     }
 
     render(){
+
+      const {carId, name, mark, model, color, dataProduce} = this.state;
+
     return(  
     <Card className="border border-dark bg-dark text-white">
     <Card.Header><FontAwesomeIcon icon={faPlusSquare}/> Add Car</Card.Header>
-    <Form onSubmit={this.submitCar} id="carFormId">
+    <Form onReset={this.resetCar} onSubmit={this.submitCar} id="carFormId">
         <Card.Body>
          <Form.Row>
+         <Form.Group as={Col} controlId= "formGridId">
+               
+               <Form.Label>carId</Form.Label>
+                   <Form.Control 
+              required autoComplete="off"
+              type="number"
+              name="carId" 
+              value={carId} onChange={this.carChange}
+              className="bg-dark text-white"
+              placeholder="Enter id" />
+        </Form.Group>
+
+
              <Form.Group as={Col} controlId= "formGridName">
+               
                  <Form.Label>Name</Form.Label>
                      <Form.Control 
-                required 
+                required autoComplete="off"
                 type="text"
                 name="name" 
-                value={this.state.name}
-                 onChange={this.carChange}
+                value={name} onChange={this.carChange}
                 className="bg-dark text-white"
                 placeholder="Enter Name Car" />
           </Form.Group>
@@ -44,11 +89,10 @@ export default  class Car extends Component{
   <Form.Group as={Col} controlId= "formGridMark"s>
         <Form.Label>Mark</Form.Label>
              <Form.Control  
-             required  
+             required  autoComplete="off"
              type="text"
              name="mark"
-             value={this.state.mark}
-             onChange={this.carChange}
+             value={mark} onChange={this.carChange}
             className="bg-dark text-white"
              placeholder="Mark" />
     </Form.Group>
@@ -56,11 +100,10 @@ export default  class Car extends Component{
   <Form.Group as={Col} controlId= "formGridModel">
     <Form.Label>Model</Form.Label>
     <Form.Control  
-    required 
+    required autoComplete="off"
     type="text" 
     name="model"
-    value={this.state.model}
-      onChange={this.carChange} 
+    value={model} onChange={this.carChange} 
     className="bg-dark text-white" 
     placeholder="Model" />
   </Form.Group>
@@ -68,11 +111,10 @@ export default  class Car extends Component{
   <Form.Group as={Col} controlId= "formGridColor">
     <Form.Label>Color</Form.Label>
     <Form.Control  
-    required 
+    required autoComplete="off"
      type="text" 
      name="color"
-     value={this.state.color}
-      onChange={this.carChange}
+     value={color} onChange={this.carChange}
       className="bg-dark text-white" 
       placeholder="Color" />
   </Form.Group>
@@ -80,22 +122,24 @@ export default  class Car extends Component{
   <Form.Group as={Col} controlId= "formGridYear">
     <Form.Label>Year produce</Form.Label>
     <Form.Control  
-    required 
+    required autoComplete="off"
     type="number" 
-    name="year"
-    value={this.state.year}
-      onChange={this.carChange} 
+    name="dataProduce"
+    value={dataProduce} onChange={this.carChange} 
     className="bg-dark text-white" 
     placeholder="Year produce" />
   </Form.Group>
             </Form.Row>
             </Card.Body>
             
-        <Card.Footer style={{"textAlign": "right"}}>
+      <Card.Footer style={{"textAlign": "right"}}>
         <Button size="sm" variant="success" type="submit">
-        <FontAwesomeIcon icon={faSave}/> Submit
-  </Button>
-        </Card.Footer>
+                <FontAwesomeIcon icon={faSave}/> Submit
+        </Button>{' '}
+        <Button size="sm" variant="info" type="reset">
+                <FontAwesomeIcon icon={faUndo}/> Reset
+        </Button>
+      </Card.Footer>
         </Form>
         </Card>
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CarDao {
 
-    void saveCar( Long carId, String name, String mark, String model, String color, Long dataProduce);
+    void saveCar( Car car);
 
     List<Car> findAll();
 

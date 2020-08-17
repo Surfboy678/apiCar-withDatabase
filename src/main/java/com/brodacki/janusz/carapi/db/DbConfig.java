@@ -25,8 +25,8 @@ public class DbConfig {
     }
 
     //@EventListener(ApplicationReadyEvent.class)
-    ///public void init(){
-      //  String sql = "CREATE TABLE  cars(car_id int, name varchar (255), mark varchar (255), model varchar (255), color varchar (255), data_produce int, PRIMARY KEY (car_id))";
-        //getJdbcTemplate().update(sql);
-    //}
+  //public void init(){
+        //String sql = "CREATE TABLE  cars(car_id int, name varchar (255), mark varchar (255), model varchar (255), color varchar (255), data_produce int, PRIMARY KEY (car_id))";
+      // getJdbcTemplate().update(sql);
+   // }
 }

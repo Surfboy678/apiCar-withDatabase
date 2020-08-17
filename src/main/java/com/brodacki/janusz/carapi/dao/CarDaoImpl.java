@@ -20,8 +20,8 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public void saveCar(Long carId, String name, String mark, String model, String color, Long dataProduce) {
-        Car car = new Car(carId, name, mark, model, color, dataProduce);
+    public void saveCar(Car car) {
+        //Car car = new Car(carId, name, mark, model, color, dataProduce);
         String sql = "INSERT INTO cars VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, car.getCarId(), car.getName(), car.getMark(), car.getModel(), car.getColor(), car.getDataProduce());
     }

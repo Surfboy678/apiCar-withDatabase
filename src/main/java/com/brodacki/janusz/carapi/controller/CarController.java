@@ -4,11 +4,12 @@ import com.brodacki.janusz.carapi.service.CarService;
 import com.brodacki.janusz.carapi.dao.CarDao;
 import com.brodacki.janusz.carapi.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/cars")
@@ -36,10 +37,10 @@ public class CarController {
         return "carform";
     }
 
-    @PostMapping
-    public String saveCar( Long carId,String name, String mark, String model, String color, Long dataProduce) {
-        carDao.saveCar(carId, name, mark, model, color, dataProduce);
-        return "redirect:/cars";
+    @PostMapping("/save")
+    public void saveCar(@RequestBody Car car) {
+        carDao.saveCar(car);
+        //return "redirect:/cars";
     }
 
     @PostMapping("/update")
@@ -68,6 +69,7 @@ public class CarController {
         model.addAttribute("maxYear", carService.getMaxYear());
         model.addAttribute("from", from);
         model.addAttribute("to", to);
+
         return "sort";
     }
 
