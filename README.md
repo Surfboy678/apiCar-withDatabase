@@ -1,0 +1,1 @@
+Jest to aplikacja Rest api za pomocą której można dodać informacje do bazy danych na temat samochodow, wyświetlić i ukatualnić bądź usunąć. Aplikacja powstał w calu zapoznanie się zbiblioteką react. Wszystko zostało zrealizowane w java 8, spring boot, JDBC, remote MySql oraz react.
