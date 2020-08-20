@@ -40,7 +40,7 @@ public class CarController {
     @PostMapping("/save")
     public void saveCar(@RequestBody Car car) {
         carDao.saveCar(car);
-        //return "redirect:/cars";
+
     }
 
     @PostMapping("/update")
@@ -50,16 +50,13 @@ public class CarController {
         return "updatecar";
     }
 
-    @GetMapping("/delete/{idCar}")
-    public String deleteCar(@PathVariable Long idCar, Model model) {
-       Car car = carService.getCarById(idCar);
-        if(car != null){
-          carService.deleteCarById(idCar);
-            model.addAttribute("cars", carDao.findAll());
-            return "cars";
-        }else
-            return null;
+    @PostMapping("/delete/{idCar}")
+    public void deleteCar(@PathVariable Long idCar) {
+        Car car = carService.getCarById(idCar);
+        if (car != null) {
+            carService.deleteCarById(idCar);
 
+        }
     }
     @GetMapping("/sort")
     public String getSelectedCars(@RequestParam Long from, @RequestParam Long to, Model model) {

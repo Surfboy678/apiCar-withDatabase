@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Card, Table, ButtonGroup, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faList, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
+import MyToast from './MyToast'
 import axios from 'axios';
 
 export default class CarList extends Component{
@@ -29,11 +30,33 @@ export default class CarList extends Component{
 
     }
 
+    deleteCar = (carId) => {
+       axios.post("http://localhost:8080/cars/delete/" + carId)
+       .then(response => {
+           if(response.data != null){
+            this.setState({"show" : true});
+            setTimeout(() => this.setState({"show" : false}), 3000 )
+               this.setState({
+                   cars: this.state.cars.filter(car => car.carId !== carId)
+
+               });
+            }else{
+                this.setState({"show" : false});
+              }
+
+       });
+    };
+
 
     render() {
         return(
+            <div>
 
-       <Card className="border border-dark bg-dark text-white">
+
+        <div style={{"display": this.state.show ? "block": "none"}}>
+          <MyToast children = {{show:this.state.show, message :"delete car sucessfully.", type:"danger"}}/>
+        </div>
+        <Card className="border border-dark bg-dark text-white">
            <Card.Header><FontAwesomeIcon icon={faList}/> Car List</Card.Header>
            <Card.Body>
            <Table striped bordered hover variant="dark">
@@ -62,7 +85,7 @@ export default class CarList extends Component{
             <td>
                 <ButtonGroup>
                     <Button size="sm" variant="outline-primary"><FontAwesomeIcon icon={faEdit}/></Button>
-                    <Button size="sm" variant="outline-danger"><FontAwesomeIcon icon={faTrash}/></Button>
+                    <Button size="sm" variant="outline-danger" onClick={this.deleteCar.bind(this, car.carId)}><FontAwesomeIcon icon={faTrash}/></Button>
                 </ButtonGroup>
             </td>
         </tr>
@@ -73,6 +96,10 @@ export default class CarList extends Component{
            </Card.Body>
 
        </Card>
+
+            </div>
+
+       
     
         );
     }
