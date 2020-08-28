@@ -30,6 +30,10 @@ public class CarController {
        List<Car> allCars = carService.findAllCars();
         return allCars;
     }
+    @GetMapping("/car/{id}")
+    public Car getCarById(@PathVariable Long id){
+        return carService.getCarById(id);
+    }
 
     @RequestMapping("/newCar")
     public String createCar(Model model) {
@@ -43,11 +47,9 @@ public class CarController {
 
     }
 
-    @PostMapping("/update")
-    public String updateCar(Car newCar, Model model) {
-       carService.getUpdateCar(newCar);
-        model.addAttribute("updateCar");
-        return "updatecar";
+    @PutMapping("/update")
+    public void updateCar(@RequestBody Car newCar) {
+      carService.getUpdateCar(newCar);
     }
 
     @PostMapping("/delete/{idCar}")

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Card, Form, Button, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faSave, faPlusSquare, faUndo} from '@fortawesome/free-solid-svg-icons'
+import {faSave, faPlusSquare, faUndo, faList, faEdit} from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast'
 import axios from 'axios';
 
@@ -18,11 +18,36 @@ export default  class Car extends Component{
 
     initialState = {
       carId:'', name:'', mark:'', model:'', color:'', dataProduce:''
+    };
+
+    componentDidMount(){
+      const carId = +this.props.match.params.carId;
+      if(carId){
+        this.findCarById(carId);
+      }
+    }
+
+    findCarById = (carId) =>{
+      axios.get("http://localhost:8080/cars/car/"+carId)
+      .then(response => {
+        if(response.data != null){
+          this.setState({
+            carId: response.data.carId,
+            name: response.data.name,
+            mark: response.data.mark,
+            model: response.data.model,
+            color: response.data.color,
+            dataProduce: response.data.dataProduce
+          });
+        }
+      }).catch((error) => {
+        console.error("Error - " +error);
+      });
     }
 
     resetCar=() =>{
       this.setState(() => this.initialState);
-    }
+    };
 
     submitCar = event =>{
         event.preventDefault();
@@ -40,21 +65,53 @@ export default  class Car extends Component{
         axios.post("http://localhost:8080/cars/save", car)
         .then(response => {
             if(response.data != null){
-            this.setState({"show" : true});
+            this.setState({"show" : true, "method" : "post"});
             setTimeout(() => this.setState({"show" : false}), 3000 )
             }else{
               this.setState({"show" : false});
             }
         }); 
         this.setState(this.initialState);
-    }
+    };
+
+    updateCar = event =>{
+      event.preventDefault();
+
+        const car = {
+        carId: this.state.carId,
+        name: this.state.name,
+        mark: this.state.mark,
+        model: this.state.model,
+        color: this.state.color,
+        dataProduce: this.state.dataProduce
+
+        };
+
+        axios.put("http://localhost:8080/cars/update/", car)
+        .then(response => {
+            if(response.data != null){
+            this.setState({"show" : true, "method" : "put"});
+            setTimeout(() => this.setState({"show" : false}), 3000 );
+            setTimeout(() => this.carList(), 3000 );
+            }else{
+              this.setState({"show" : false});
+            }
+        }); 
+        this.setState(this.initialState);
+
+    };
       
 
     carChange=event =>{
         this.setState({
             [event.target.name]: event.target.value
         });
-    }
+    };
+
+    carList = () =>{
+      return this.props.history.push("/list");
+
+    };
 
     render(){
 
@@ -63,11 +120,11 @@ export default  class Car extends Component{
     return(
       <div>
         <div style={{"display": this.state.show ? "block": "none"}}>
-          <MyToast children = {{show:this.state.show, message :"add car sucessfully.", type:"success"}}/>
+          <MyToast show= {this.state.show} message = {this.state.method === "put" ? "Car update sucessfully." : "Car add sucessfully." } type = {"success"}/>
         </div>
         <Card className="border border-dark bg-dark text-white">
-    <Card.Header><FontAwesomeIcon icon={faPlusSquare}/> Add Car</Card.Header>
-    <Form onReset={this.resetCar} onSubmit={this.submitCar} id="carFormId">
+    <Card.Header><FontAwesomeIcon icon={this.state.carId ? faEdit : faPlusSquare}/>{this.state.carId ? "Update car" : "Add new Car"}</Card.Header>
+    <Form onReset={this.resetCar} onSubmit={this.state.carId ? this.updateCar : this.submitCar } id="carFormId">
         <Card.Body>
          <Form.Row>
          <Form.Group as={Col} controlId= "formGridId">
@@ -143,11 +200,15 @@ export default  class Car extends Component{
             
       <Card.Footer style={{"textAlign": "right"}}>
         <Button size="sm" variant="success" type="submit">
-                <FontAwesomeIcon icon={faSave}/> Submit
+                <FontAwesomeIcon icon={faSave}/>{this.state.carId ? "Update" : "Save"} 
         </Button>{' '}
         <Button size="sm" variant="info" type="reset">
                 <FontAwesomeIcon icon={faUndo}/> Reset
+        </Button>{' '}
+        <Button size="sm" variant="info" type="button" onClick = {this.carList.bind()}>
+                <FontAwesomeIcon icon={faList}/> Car list
         </Button>
+        
       </Card.Footer>
         </Form>
         </Card>
